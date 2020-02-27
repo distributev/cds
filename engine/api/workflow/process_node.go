@@ -42,7 +42,7 @@ func processNodeTriggers(ctx context.Context, db gorp.SqlExecutor, store cache.S
 					Args: []interface{}{errPwnr.Error()},
 				})
 			}
-			_, _ = report.Merge(ctx, r1, nil)
+			report.Merge(ctx, r1)
 			continue
 		}
 	}
@@ -86,14 +86,14 @@ func processNodeRun(ctx context.Context, db gorp.SqlExecutor, store cache.Store,
 		if errT != nil {
 			return nil, false, sdk.WrapError(errT, "Unable to processNode")
 		}
-		report.Merge(ctx, r1, nil) // nolint
+		report.Merge(ctx, r1)
 		return report, conditionOK, nil
 	case sdk.NodeTypeOutGoingHook:
 		r1, conditionOK, errO := processNodeOutGoingHook(ctx, db, store, proj, wr, mapNodes, parentNodeRuns, n, subNumber, manual)
 		if errO != nil {
 			return nil, false, sdk.WrapError(errO, "Unable to processNodeOutGoingHook")
 		}
-		report.Merge(ctx, r1, nil) // nolint
+		report.Merge(ctx, r1)
 		return report, conditionOK, nil
 	}
 	return nil, false, nil
@@ -385,7 +385,7 @@ func processNode(ctx context.Context, db gorp.SqlExecutor, store cache.Store, pr
 	if err != nil {
 		return nil, false, sdk.WrapError(err, "unable to execute workflow run")
 	}
-	_, _ = report.Merge(ctx, r1, nil)
+	report.Merge(ctx, r1)
 	return report, true, nil
 }
 
